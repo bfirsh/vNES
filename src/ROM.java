@@ -1,6 +1,6 @@
 /*
 vNES
-Copyright © 2006-2010 Jamie Sanders
+Copyright © 2006-2011 Jamie Sanders
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -50,8 +50,6 @@ public class ROM {
     boolean valid;
     static String[] mapperName;
     static boolean[] mapperSupported;
-    protected long crc32 = 0;
-
 
     static {
 
@@ -303,16 +301,6 @@ public class ROM {
         return;
         }*/
 
-        // Record CRC32 for Cartridge
-        java.util.zip.CRC32 crc = new java.util.zip.CRC32();
-        byte[] tempArray = new byte[rom.length + vrom.length];
-
-        crc.update(tempArray);
-        crc32 = crc.getValue();
-        tempArray = null;
-
-        System.out.println("CRC Value: " + crc32 + "");
-
         valid = true;
 
     }
@@ -493,9 +481,7 @@ public class ROM {
                 case 182: {
                     return new Mapper182();
                 }
-                case 232: {
-                    return new Mapper232();
-                }
+
             }
         }
 
@@ -591,7 +577,7 @@ public class ROM {
                 JOptionPane.showInputDialog("Save Code for Resuming Game.", encodedData);
 
                 saveRamUpToDate = true;
-            //System.out.println("Battery RAM sent to user.");
+                //System.out.println("Battery RAM sent to user.");
 
             } catch (Exception e) {
 

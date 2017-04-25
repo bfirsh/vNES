@@ -1,6 +1,6 @@
 /*
 vNES
-Copyright © 2006-2010 Jamie Sanders
+Copyright © 2006-2011 Jamie Sanders
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -24,7 +24,8 @@ public class PPU {
     // Rendering Options:
     boolean showSpr0Hit = false;
     boolean showSoundBuffer = false;
-    boolean clipToTvSize = true;
+    boolean clipTVcolumn = true;
+    boolean clipTVrow = false;
     // Control Flags Register 1:
     public int f_nmiOnVblank;    // NMI on VBlank. 0=disable, 1=enable
     public int f_spriteSize;     // Sprite size. 0=8x8, 1=8x16
@@ -556,7 +557,7 @@ public class PPU {
         // This is a bit lazy..
         // if either the sprites or the background should be clipped,
         // both are clipped after rendering is finished.
-        if (clipToTvSize || f_bgClipping == 0 || f_spClipping == 0) {
+        if (clipTVcolumn || f_bgClipping == 0 || f_spClipping == 0) {
             // Clip left 8-pixels column:
             for (int y = 0; y < 240; y++) {
                 for (int x = 0; x < 8; x++) {
@@ -565,7 +566,7 @@ public class PPU {
             }
         }
 
-        if (clipToTvSize) {
+        if (clipTVcolumn) {
             // Clip right 8-pixels column too:
             for (int y = 0; y < 240; y++) {
                 for (int x = 0; x < 8; x++) {
@@ -575,7 +576,7 @@ public class PPU {
         }
 
         // Clip top and bottom 8 pixels:
-        if (clipToTvSize) {
+        if (clipTVrow) {
             for (int y = 0; y < 8; y++) {
                 for (int x = 0; x < 256; x++) {
                     buffer[(y << 8) + x] = 0;

@@ -1,6 +1,6 @@
 /*
 vNES
-Copyright © 2006-2010 Jamie Sanders
+Copyright © 2006-2011 Jamie Sanders
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -27,7 +27,6 @@ public class NES {
     public MemoryMapper memMapper;
     public PaletteTable palTable;
     public ROM rom;
-    public GameGenie gameGenie;
     int cc;
     public String romFile;
     boolean isRunning = false;
@@ -49,7 +48,6 @@ public class NES {
         palTable = new PaletteTable();
         ppu = new PPU(this);
         papu = new PAPU(this);
-        gameGenie = new GameGenie();
 
         // Init sound registers:
         for (int i = 0; i < 0x14; i++) {
@@ -245,11 +243,6 @@ public class NES {
         return memMapper;
     }
 
-    // Returns the Game Genie:
-    public GameGenie getGameGenie() {
-        return gameGenie;
-    }
-
     // Loads a ROM file into the CPU and PPU.
     // The ROM file is validated first.
     public boolean loadRom(String file) {
@@ -277,10 +270,6 @@ public class NES {
                 cpu.setMapper(memMapper);
                 memMapper.loadROM(rom);
                 ppu.setMirroring(rom.getMirroringType());
-
-                if (gameGenie.getCodeCount() > 0) {
-                    memMapper.setGameGenieState(true);
-                }
 
                 this.romFile = file;
 
@@ -386,7 +375,6 @@ public class NES {
         sprMem = null;
         memMapper = null;
         rom = null;
-        gameGenie = null;
         palTable = null;
 
     }

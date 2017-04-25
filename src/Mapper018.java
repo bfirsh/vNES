@@ -1,6 +1,6 @@
 /*
 vNES
-Copyright © 2006-2010 Jamie Sanders
+Copyright © 2006-2011 Jamie Sanders
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -313,16 +313,6 @@ public class Mapper018 extends MapperDefault {
 
         return 0;
 
-    }
-
-    public void setCRC(long crc) {
-        patch = 0;
-
-        if (crc == 253471719l) {
-            // Jajamaru Gekimaden - Maboroshi no Kinmajou (J)
-            patch = 1;
-            System.out.println("Patched CRC:" + crc);
-        }
     }
 
     public void reset() {

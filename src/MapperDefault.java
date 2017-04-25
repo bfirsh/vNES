@@ -1,6 +1,6 @@
 /*
 vNES
-Copyright © 2006-2010 Jamie Sanders
+Copyright © 2006-2011 Jamie Sanders
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -33,7 +33,6 @@ public class MapperDefault implements MemoryMapper {
     public int mouseX;
     public int mouseY;
     int tmp;
-    long crc;
 
     public void init(NES nes) {
 
@@ -156,32 +155,6 @@ public class MapperDefault implements MemoryMapper {
     }
 
     public short load(int address) {
-
-        // Game Genie codes active?
-        if (gameGenieActive) {
-            if (nes.gameGenie.addressMatch[address]) {
-
-                tmp = nes.gameGenie.getCodeIndex(address);
-
-                // Check the code type:
-                if (nes.gameGenie.getCodeType(tmp) == GameGenie.TYPE_6CHAR) {
-
-                    // Return the code value:
-                    return (short) nes.gameGenie.getCodeValue(tmp);
-
-                } else {
-
-                    // Check whether the actual value equals the compare value:
-                    if (cpuMemArray[address] == nes.gameGenie.getCodeCompare(tmp)) {
-
-                        // The values match, so use the supplied game genie value:
-                        return (short) nes.gameGenie.getCodeValue(tmp);
-
-                    }
-
-                }
-            }
-        }
 
         // Wrap around:
         address &= 0xFFFF;
@@ -723,9 +696,6 @@ public class MapperDefault implements MemoryMapper {
 
     public int syncH(int scanline) {
         return 0;
-    }
-
-    public void setCRC(long crc) {
     }
 
     public void setMouseState(boolean pressed, int x, int y) {

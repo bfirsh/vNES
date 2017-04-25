@@ -1,6 +1,6 @@
 /*
 vNES
-Copyright © 2006-2010 Jamie Sanders
+Copyright © 2006-2011 Jamie Sanders
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -16,6 +16,7 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 import java.io.*;
+import java.util.zip.*;
 
 public class FileLoader {
 
@@ -23,7 +24,7 @@ public class FileLoader {
     public short[] loadFile(String fileName, UI ui) {
 
         int flen;
-        byte[] tmp = new byte[0];
+        byte[] tmp = new byte[2048];
 
         // Read file:
         try {
@@ -40,20 +41,30 @@ public class FileLoader {
                 }
 
             }
+            ZipInputStream zis = null;
+            boolean zip = false;
 
             int pos = 0;
             int readbyte = 0;
+
             if (!(in instanceof FileInputStream)) {
 
-                // Can't get the file size, so use the applet parameter:
-                int total = -1;
-                if (Globals.appletMode && ui != null) {
+
+                long total = -1;
+
+                if (fileName.endsWith(".zip")) {
+                    zis = new ZipInputStream(in);
+                    ZipEntry entry = zis.getNextEntry();
+                    total = entry.getSize();
+                    zip = true;
+                } else if (Globals.appletMode && ui != null) {
+                    // Can't get the file size, so use the applet parameter
                     total = ui.getRomFileSize();
                 }
 
-                int progress = -1;
+                long progress = -1;
                 while (readbyte != -1) {
-                    readbyte = in.read(tmp, pos, tmp.length - pos);
+                    readbyte = zip ? zis.read(tmp, pos, tmp.length - pos) : in.read(tmp, pos, tmp.length - pos);
                     if (readbyte != -1) {
                         if (pos >= tmp.length) {
                             byte[] newtmp = new byte[tmp.length + 32768];
@@ -68,7 +79,7 @@ public class FileLoader {
                     if (total > 0 && ((pos * 100) / total) > progress) {
                         progress = (pos * 100) / total;
                         if (ui != null) {
-                            ui.showLoadProgress(progress);
+                            ui.showLoadProgress((int) progress);
                         }
                     }
 
@@ -114,4 +125,4 @@ public class FileLoader {
         return ret;
 
     }
-}	
+}

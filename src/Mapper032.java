@@ -1,6 +1,6 @@
 /*
 vNES
-Copyright © 2006-2010 Jamie Sanders
+Copyright © 2006-2011 Jamie Sanders
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -116,16 +116,6 @@ public class Mapper032 extends MapperDefault {
                     break;
             }
         }
-    }
-
-    public void setCRC(long crc) {
-        patch = 0;
-
-        if (crc == 0x243A8735) {
-            // Major League Baseball
-            patch = 1;
-        }
-
     }
 
     public void loadROM(ROM rom) {

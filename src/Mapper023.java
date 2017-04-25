@@ -1,6 +1,6 @@
 /*
 vNES
-Copyright © 2006-2010 Jamie Sanders
+Copyright © 2006-2011 Jamie Sanders
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -27,22 +27,6 @@ public class Mapper023 extends MapperDefault {
         super.init(nes);
         reset();
     }
-
-    /*public void setCRC(long crc) {
-
-    if (crc == 3254515289l) {
-
-    // Akumajou Special - Boku Dracula Kun
-    patch = 0xF00C;
-    System.out.println("M023:" + crc);
-    }
-    if (crc == 3924573617l) {
-
-    // Akumajou Special - Boku Dracula Kun
-    patch = 0xF00C;
-    System.out.println("M023:" + crc);
-    }
-    }*/
 
     public void write(int address, short value) {
 

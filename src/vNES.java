@@ -1,6 +1,6 @@
 /*
 vNES
-Copyright © 2006-2010 Jamie Sanders
+Copyright © 2006-2011 Jamie Sanders
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -101,8 +101,8 @@ public class vNES extends Applet implements Runnable {
         started = true;
 
         // Load ROM file:
-        System.out.println("vNES 2.13 \u00A9 2006-2010 Jamie Sanders");
-        System.out.println("For games and updates, see www.virtualnes.com");
+        System.out.println("vNES 2.14 \u00A9 2006-2011 Jamie Sanders");
+        System.out.println("For updates, see www.thatsanderskid.com");
         System.out.println("Use of this program subject to GNU GPL, Version 3.");
 
         nes.loadRom(rom);
@@ -142,8 +142,7 @@ public class vNES extends Applet implements Runnable {
         if (nes != null && nes.getCpu().isRunning()) {
             stop();
         }
-        //System.out.println("* Destroying applet.. *");
-
+        
         if (nes != null) {
             nes.destroy();
         }
@@ -213,8 +212,8 @@ public class vNES extends Applet implements Runnable {
         g.setColor(Color.white);
         g.drawString(disp, scrw / 2 - txtw / 2, scrh / 2 - txth / 2);
         g.drawString(disp, scrw / 2 - txtw / 2, scrh / 2 - txth / 2);
-        g.drawString("vNES \u00A9 2006-2009 Jamie Sanders", 12, 448);
-        g.drawString("For games and updates, visit www.virtualnes.com", 12, 464);
+        g.drawString("vNES \u00A9 2006-2011 Jamie Sanders", 12, 448);
+        g.drawString("For updates, visit www.thatsanderskid.com", 12, 464);
     }
 
     public void update(Graphics g) {
