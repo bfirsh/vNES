@@ -1,6 +1,6 @@
 /*
 vNES
-Copyright © 2006-2011 Jamie Sanders
+Copyright © 2006-2013 Open Emulation Project
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software

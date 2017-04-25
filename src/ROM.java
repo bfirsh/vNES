@@ -1,6 +1,6 @@
 /*
 vNES
-Copyright © 2006-2011 Jamie Sanders
+Copyright © 2006-2013 Open Emulation Project
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -215,9 +215,9 @@ public class ROM {
         mapperType = (header[6] >> 4) | (header[7] & 0xF0);
 
         // Battery RAM?
-        if (batteryRam) {
-            loadBatteryRam();
-        }
+//        if (batteryRam) {
+//            loadBatteryRam();
+//        }
 
         // Check whether byte 8-15 are zero's:
         boolean foundError = false;
@@ -494,7 +494,7 @@ public class ROM {
     public void setSaveState(boolean enableSave) {
         //this.enableSave = enableSave;
         if (enableSave && !batteryRam) {
-            loadBatteryRam();
+//          loadBatteryRam();
         }
     }
 
@@ -504,94 +504,98 @@ public class ROM {
 
     }
 
-    private void loadBatteryRam() {
-        if (batteryRam) {
-            try {
-                saveRam = new short[0x2000];
-                saveRamUpToDate = true;
+/*
+ * Oracle broke the way this work, so most of it has been commented out.
+ */
+    
+//    private void loadBatteryRam() {
+//        if (batteryRam) {
+//            try {
+//                saveRam = new short[0x2000];
+//                saveRamUpToDate = true;
+//                
+//                // Get hex-encoded memory string from user:
+//                String encodedData = JOptionPane.showInputDialog("Returning players insert Save Code here.");
+//                if (encodedData == null) {
+//                    // User cancelled the dialog.
+//                    return;
+//                }
+//
+//                // Remove all garbage from encodedData:
+//                encodedData = encodedData.replaceAll("[^\\p{XDigit}]", "");
+//                if (encodedData.length() != saveRam.length * 2) {
+//                    // Either too few or too many digits.
+//                    return;
+//                }
+//
+//                // Convert hex-encoded memory string to bytes:
+//                for (int i = 0; i < saveRam.length; i++) {
+//                    String hexByte = encodedData.substring(i * 2, i * 2 + 2);
+//                    saveRam[i] = Short.parseShort(hexByte, 16);
+//                }
+//
+//                //System.out.println("Battery RAM loaded.");
+//                if (nes.getMemoryMapper() != null) {
+//                    nes.getMemoryMapper().loadBatteryRam();
+//                }
+//
+//            } catch (Exception e) {
+//                //System.out.println("Unable to get battery RAM from user.");
+//                failedSaveFile = true;
+//            }
+//        }
+//    }
 
-                // Get hex-encoded memory string from user:
-                String encodedData = JOptionPane.showInputDialog("Returning players insert Save Code here.");
-                if (encodedData == null) {
-                    // User cancelled the dialog.
-                    return;
-                }
+//    public void writeBatteryRam(int address, short value) {
+//
+//        if (!failedSaveFile && !batteryRam && enableSave) {
+//            loadBatteryRam();
+//        }
+//
+//        //System.out.println("Trying to write to battery RAM. batteryRam="+batteryRam+" enableSave="+enableSave);
+//        if (batteryRam && enableSave && !failedSaveFile) {
+//            saveRam[address - 0x6000] = value;
+//            saveRamUpToDate = false;
+//        }
+//
+//    }
 
-                // Remove all garbage from encodedData:
-                encodedData = encodedData.replaceAll("[^\\p{XDigit}]", "");
-                if (encodedData.length() != saveRam.length * 2) {
-                    // Either too few or too many digits.
-                    return;
-                }
-
-                // Convert hex-encoded memory string to bytes:
-                for (int i = 0; i < saveRam.length; i++) {
-                    String hexByte = encodedData.substring(i * 2, i * 2 + 2);
-                    saveRam[i] = Short.parseShort(hexByte, 16);
-                }
-
-                //System.out.println("Battery RAM loaded.");
-                if (nes.getMemoryMapper() != null) {
-                    nes.getMemoryMapper().loadBatteryRam();
-                }
-
-            } catch (Exception e) {
-                //System.out.println("Unable to get battery RAM from user.");
-                failedSaveFile = true;
-            }
-        }
-    }
-
-    public void writeBatteryRam(int address, short value) {
-
-        if (!failedSaveFile && !batteryRam && enableSave) {
-            loadBatteryRam();
-        }
-
-        //System.out.println("Trying to write to battery RAM. batteryRam="+batteryRam+" enableSave="+enableSave);
-        if (batteryRam && enableSave && !failedSaveFile) {
-            saveRam[address - 0x6000] = value;
-            saveRamUpToDate = false;
-        }
-
-    }
-
-    public void closeRom() {
-
-        if (batteryRam && !saveRamUpToDate) {
-            try {
-
-                // Convert bytes to hex-encoded memory string:
-                StringBuilder sb = new StringBuilder(saveRam.length * 2 + saveRam.length / 38);
-                for (int i = 0; i < saveRam.length; i++) {
-                    String hexByte = String.format("%02x", saveRam[i] & 0xFF);
-                    if (i % 38 == 0 && i != 0) {
-                        // Put spacing in so that word wrap will work.
-                        sb.append(" ");
-                    }
-                    sb.append(hexByte);
-                }
-                String encodedData = sb.toString();
-
-                // Send hex-encoded memory string to user:
-                JOptionPane.showInputDialog("Save Code for Resuming Game.", encodedData);
-
-                saveRamUpToDate = true;
-                //System.out.println("Battery RAM sent to user.");
-
-            } catch (Exception e) {
-
-                //System.out.println("Trouble sending battery RAM to user.");
-                e.printStackTrace();
-
-            }
-        }
-
-    }
+//    public void closeRom() {
+//    
+//        if (batteryRam && !saveRamUpToDate) {
+//            try {
+//
+//                // Convert bytes to hex-encoded memory string:
+//                StringBuilder sb = new StringBuilder(saveRam.length * 2 + saveRam.length / 38);
+//                for (int i = 0; i < saveRam.length; i++) {
+//                    String hexByte = String.format("%02x", saveRam[i] & 0xFF);
+//                    if (i % 38 == 0 && i != 0) {
+//                        // Put spacing in so that word wrap will work.
+//                        sb.append(" ");
+//                    }
+//                    sb.append(hexByte);
+//                }
+//                String encodedData = sb.toString();
+//
+//                // Send hex-encoded memory string to user:
+//                JOptionPane.showInputDialog("Save Code for Resuming Game.", encodedData);
+//
+//                saveRamUpToDate = true;
+//                //System.out.println("Battery RAM sent to user.");
+//
+//            } catch (Exception e) {
+//
+//                //System.out.println("Trouble sending battery RAM to user.");
+//                e.printStackTrace();
+//
+//            }
+//        }
+//
+//    }
 
     public void destroy() {
 
-        closeRom();
+//      closeRom();
         nes = null;
 
     }

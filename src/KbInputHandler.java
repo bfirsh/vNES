@@ -1,6 +1,6 @@
 /*
 vNES
-Copyright © 2006-2011 Jamie Sanders
+Copyright © 2006-2013 Open Emulation Project
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -82,20 +82,8 @@ public class KbInputHandler implements KeyListener, InputHandler {
                     }
                     break;
                 }
-                case KeyEvent.VK_F10: {
-                    // Just using this to display the battery RAM contents to user.
-                    if (nes.rom != null) {
-                        nes.rom.closeRom();
-                    }
-                    break;
-                }
-                case KeyEvent.VK_F12: {
-                    JOptionPane.showInputDialog("Save Code for Resuming Game.", "Test");
-                    break;
-                }
             }
         }
-
     }
 
     public void keyTyped(KeyEvent ke) {
